@@ -1,0 +1,6 @@
+  run 1st
+  
+  faithfulness              0.9369
+  answer_relevancy          0.6698
+  context_recall            0.6897
+  context_precision         0.5694

@@ -20,8 +20,8 @@ from typing import List, Dict
 from openai import OpenAI
 
 # ── Your existing RAG components ──────────────────────────────────────────────
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_ollama import OllamaEmbeddings
+from langchain_chroma import Chroma
 from langchain_core.runnables import RunnableLambda, RunnableParallel, RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from ragas.embeddings import OpenAIEmbeddings as RagasOpenAIEmbeddings
@@ -98,7 +98,8 @@ def sample_chunks(n: int) -> List[str]:
     embeddings  = OllamaEmbeddings(model="nomic-embed-text")
     vectorstore = Chroma(
         embedding_function=embeddings,
-        persist_directory="./chroma_qwen_db",  # same as your retreiver.py
+        persist_directory="./textile_nomic_db",
+        collection_name="textile_engineering",
     )
 
     raw      = vectorstore._collection.get(include=["documents"])

@@ -14,7 +14,6 @@ def chunk_record(record, source_type):
     )
     
     chunks = splitter.split_text(text)
-    
     results = []
     for i, chunk in enumerate(chunks):
         results.append({
@@ -30,25 +29,36 @@ def chunk_record(record, source_type):
             "chunk_text":   chunk,
             "char_count":   len(chunk)
         })
-    
     return results
 
 all_chunks = []
 
-# ── HTML lectures only for now ─────────────────────────────
-with open("textile_html_lectures.json") as f:
+# ── Source 1: HTML lectures ────────────────────────────────
+with open("../RAG/textile_html_lectures_v2.json") as f:
     html_lectures = json.load(f)
 
 for record in html_lectures:
     all_chunks.extend(chunk_record(record, "html"))
 
-print(f"HTML chunks:    {len(all_chunks)}")
-print(f"Total words:    {sum(c['char_count'] for c in all_chunks) // 5:,}")
-print(f"Avg chunk size: {sum(c['char_count'] for c in all_chunks) // len(all_chunks)} chars")
+html_count = len(all_chunks)
+print(f"HTML chunks:   {html_count}")
 
+# ── Source 2: Video transcripts ───────────────────────────
+with open("../RAG/textile_transcripts.json") as f:
+    video_lectures = json.load(f)
+
+for record in video_lectures:
+    all_chunks.extend(chunk_record(record, "video"))
+
+video_count = len(all_chunks) - html_count
+print(f"Video chunks:  {video_count}")
+
+# ── Summary ───────────────────────────────────────────────
+print(f"\nTotal chunks:     {len(all_chunks)}")
+print(f"Avg chunk size:   {sum(c['char_count'] for c in all_chunks) // len(all_chunks)} chars")
+
+# ── Save ──────────────────────────────────────────────────
 with open("textile_chunks.json", "w", encoding="utf-8") as f:
     json.dump(all_chunks, f, indent=2, ensure_ascii=False)
 
 print(f"Saved → textile_chunks.json")
-print(f"\nTomorrow — run this to add video transcripts:")
-print(f"  python chunk_add_videos.py")

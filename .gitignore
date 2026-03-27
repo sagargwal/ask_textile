@@ -10,3 +10,11 @@ RAG/textile_html_lectures.json
 RAG/textile_transcripts.json
 RAG/failed_transcripts.json
 data/youtube_cookies.txt
+textile_html_lectures_v2.json
+failed_transcripts.json
+html_failed_v2.json
+textile_courses.json
+textile_courses_with_youtube.json
+textile_chunks.json
+textile_nomic_db
+
